@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
-  resources :sessions, only: [:new, :create, :show]
-  resources :users, only: [:new, :create, :show]
+  resources :blogs do
+    collection do
+      post :confirm
+    end
+  end
+  resources :sessions
+  resources :users
 end
