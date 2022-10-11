@@ -1,2 +1,13 @@
+<header>
 <h1><%= @user.name %>のページ</h1>
+</header>
 
+<p>メールアドレス: <%= @user.email %></p>
+
+<%= link_to 'ユーザ編集画面へ', edit_user_path %>
+
+<%= link_to '新規投稿画面',new_blog_path %>
+
+<footer>
+<p>base</p>
+</footer>
