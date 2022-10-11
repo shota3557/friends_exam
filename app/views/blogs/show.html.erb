@@ -1,14 +1,22 @@
 <p id="notice"><%= notice %></p>
 
+<header>
+<h1>投稿詳細画面</h1>
+</header>
+
 <p>
-  <strong>Image:</strong>
+  <strong>投稿した画像:</strong>
   <%= image_tag @blog.image.url %>
 </p>
 
 <p>
-  <strong>Content:</strong>
+  <strong>投稿内容:</strong>
   <%= @blog.content %>
 </p>
 
-<%= link_to 'Edit', edit_blog_path(@blog) %> |
-<%= link_to 'Back', blogs_path %>
+<%= link_to '投稿内容を編集する', edit_blog_path(@blog) %> |
+<%= link_to '投稿一覧へ', blogs_path %>
+
+<footer>
+<p>base</p>
+</footer>
