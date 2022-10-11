@@ -17,12 +17,16 @@ class BlogsController < ApplicationController
 
   def create
     @blog = current_user.blogs.build(blog_params)
-    if @blog.save
-      redirect_to blogs_path
-    else  
-      flash.now[:danger]
+    if params[:back]
       render :new
-    end
+    else  
+      if @blog.save
+        redirect_to blogs_path
+      else  
+        flash.now[:danger]
+        render :new
+      end
+    end  
   end
 
   def update
