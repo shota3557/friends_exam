@@ -1,0 +1,58 @@
+version: '3'
+services:
+# アプリケーションに関する記述
+  app:
+    build: 
+    #context：読み込むDockerfileの場所を指定
+      context: .
+    env_file:
+      - .env
+    command: bundle exec puma -C config/puma.rb -e production
+    # 設定ファイルを指定しpuma（アプリケーションサーバ）を立ち上げる
+    volumes: #ホスト側のdocker-compose.ymlがあるディレクトリとコンテナ側を共通化（マウント）
+      - .:/base
+      - public-data:/base/public
+      - tmp-data:/base/tmp
+      - log-data:/base/log
+    networks: #dbコンテナと共通のネットワークを利用する設定
+      - base_network
+    depends_on:
+      - db
+
+  # db:
+  #   image: postgres
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     POSTGRES_PASSWORD: password
+  #   volumes:
+  #     - db-data:/var/lib/postgres/data
+  #   networks:
+  #     - base_network
+
+# webサーバに関する記述
+  web: 
+    build:
+    #nginx_dockerがあるDockerfileを参照
+      context: ./nginx 
+    # コンテナの中身を保存するために作成したvolumeでマウント
+    volumes:
+      - public-data:/base/public
+      - tmp-data:/base/tmp
+    # app側のコンテナが出来上がってからwebを実行する
+    depends_on:
+      - app 
+    ports:
+      - "8080:8080" # ホストからゲストへポートフォワード
+    networks:
+      - base_network      
+
+volumes:
+  public-data:
+  tmp-data:
+  log-data:
+  db-data:
+
+networks:
+  base_network:
+    external: true
